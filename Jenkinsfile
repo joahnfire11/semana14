@@ -12,13 +12,31 @@ pipeline {
     }
  
     stages {
+        stage('Instalar dependencias') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Ejecutar tests') {
+            steps {
+                sh 'npm test'
+            }
+        }
+
         stage('Construir Imagen Docker') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
                 sh 'docker build -t hola-mundo-node:latest .'
             }
         }
  
         stage('Ejecutar Contenedor Node.js') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
             steps {
                 sh '''
                     # Detener y eliminar cualquier contenedor previo con el mismo nombre
