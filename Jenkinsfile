@@ -15,20 +15,8 @@ pipeline {
         stage('Instalar dependencias') {
             steps {
                 sh '''
-                    WORKDIR="${WORKSPACE:-$PWD}"
-                    echo "Usando workspace: $WORKDIR"
-
-                    if [ ! -f "$WORKDIR/package.json" ]; then
-                        echo "No se encontró package.json en $WORKDIR"
-                        exit 1
-                    fi
-
-                    if command -v npm >/dev/null 2>&1; then
-                        cd "$WORKDIR"
-                        npm install
-                    else
-                        docker run --rm -v "$WORKDIR":/workspace -w /workspace node:22-alpine sh -lc "npm install"
-                    fi
+                    cd "$WORKSPACE"
+                    docker build -t hola-mundo-node:test .
                 '''
             }
         }
@@ -36,20 +24,7 @@ pipeline {
         stage('Ejecutar tests') {
             steps {
                 sh '''
-                    WORKDIR="${WORKSPACE:-$PWD}"
-                    echo "Usando workspace: $WORKDIR"
-
-                    if [ ! -f "$WORKDIR/package.json" ]; then
-                        echo "No se encontró package.json en $WORKDIR"
-                        exit 1
-                    fi
-
-                    if command -v npm >/dev/null 2>&1; then
-                        cd "$WORKDIR"
-                        npm test
-                    else
-                        docker run --rm -v "$WORKDIR":/workspace -w /workspace node:22-alpine sh -lc "npm test"
-                    fi
+                    docker run --rm hola-mundo-node:test sh -lc "npm test"
                 '''
             }
         }
