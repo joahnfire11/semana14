@@ -4,15 +4,20 @@ FROM node:22-alpine
 # Crear directorio de la aplicación
 WORKDIR /usr/src/app
 
-# Copiar archivos al contenedor
+# Copiar archivos de configuración de dependencias
 COPY package*.json ./
-COPY . .
 
-# Instalar dependencias con npm
-RUN npm install && chown -R node:node /usr/src/app
+# Copiar los datos y el archivo de pruebas necesarios para Jest
+COPY users.json ./
+# Copiar la carpeta completa de pruebas 'test' al contenedor
+COPY tests/ ./test/
 
-# Cambiar al usuario node para evitar permisos problemáticos
-USER node
+
+# Copiar el código principal de la aplicación
+COPY index.js .
+
+# Usar Yarn para instalar dependencias (incluyendo Jest y Supertest)
+RUN yarn install --frozen-lockfile || yarn install
 
 # Exponer el puerto de la aplicación
 EXPOSE 3000
