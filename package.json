@@ -10,11 +10,19 @@
         "testEnvironment": "node"
     },
     "dependencies": {
-        "express": "^4.21.2",
-        "jest": "^30.0.4",
-        "supertest": "^7.1.3"
+        "express": "^4.22.2",
+        "jest": "^30.4.2",
+        "supertest": "^7.2.2"
     },
     "keywords": [],
     "author": "",
-    "license": "ISC"
+    "license": "ISC",
+    "directories": {
+        "test": "tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://gabrielavelasquez0089@dev.azure.com/gabrielavelasquez0089/practica_despliegue_test/_git/practica_despliegue_test"
+    },
+    "type": "commonjs"
 }
