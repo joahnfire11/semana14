@@ -9,7 +9,10 @@ COPY package*.json ./
 COPY . .
 
 # Instalar dependencias con npm
-RUN npm install --omit=dev
+RUN npm install && chown -R node:node /usr/src/app
+
+# Cambiar al usuario node para evitar permisos problemáticos
+USER node
 
 # Exponer el puerto de la aplicación
 EXPOSE 3000
