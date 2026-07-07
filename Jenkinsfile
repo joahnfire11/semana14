@@ -14,13 +14,25 @@ pipeline {
     stages {
         stage('Instalar dependencias') {
             steps {
-                sh 'npm install'
+                sh '''
+                    if command -v npm >/dev/null 2>&1; then
+                        npm install
+                    else
+                        docker run --rm -v "$PWD":/app -w /app node:22-alpine sh -lc "npm install"
+                    fi
+                '''
             }
         }
 
         stage('Ejecutar tests') {
             steps {
-                sh 'npm test'
+                sh '''
+                    if command -v npm >/dev/null 2>&1; then
+                        npm test
+                    else
+                        docker run --rm -v "$PWD":/app -w /app node:22-alpine sh -lc "npm test"
+                    fi
+                '''
             }
         }
 
